@@ -13,6 +13,8 @@ import (
 	tele "gopkg.in/telebot.v3"
 )
 
+var TELE_TOKEN = os.Getenv("TELE_TOKEN")
+
 // botCmd represents the bot command
 var botCmd = &cobra.Command{
 	Use:     "bot",
@@ -32,7 +34,7 @@ to quickly create a Cobra application.`,
 
 func runBot() {
 	pref := tele.Settings{
-		Token:  os.Getenv("TELE_TOKEN"),
+		Token:  TELE_TOKEN,
 		Poller: &tele.LongPoller{Timeout: 10 * time.Second},
 	}
 
