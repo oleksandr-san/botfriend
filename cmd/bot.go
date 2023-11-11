@@ -15,8 +15,9 @@ import (
 
 // botCmd represents the bot command
 var botCmd = &cobra.Command{
-	Use:   "bot",
-	Short: "A brief description of your command",
+	Use:     "bot",
+	Aliases: []string{"start", "init"},
+	Short:   "A brief description of your command",
 	Long: `A longer description that spans multiple lines and likely contains examples
 and usage of using your command. For example:
 
@@ -24,29 +25,43 @@ Cobra is a CLI library for Go that empowers applications.
 This application is a tool to generate the needed files
 to quickly create a Cobra application.`,
 	Run: func(cmd *cobra.Command, args []string) {
-
-		fmt.Println("running bot")
+		fmt.Printf("running bot version: %s, commit: %s", appVersion, appCommit)
 		runBot()
 	},
 }
 
 func runBot() {
 	pref := tele.Settings{
-		Token:  os.Getenv("TOKEN"),
+		Token:  os.Getenv("TELE_TOKEN"),
 		Poller: &tele.LongPoller{Timeout: 10 * time.Second},
 	}
 
-	b, err := tele.NewBot(pref)
+	bot, err := tele.NewBot(pref)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("Please check TELE_TOKEN env variable. %s", err)
 		return
 	}
 
-	b.Handle("/hello", func(c tele.Context) error {
+	bot.Handle("/hello", func(c tele.Context) error {
 		return c.Send("Hello!")
 	})
 
-	b.Start()
+	bot.Handle(tele.OnText, func(c tele.Context) error {
+		payload := c.Message().Payload
+		log.Printf("Received message with payload='%s' and text='%s'", payload, c.Text())
+
+		switch payload {
+		case "hello":
+			err := c.Send(fmt.Sprintf("Hello %s, I'm bot %s", c.Sender().FirstName, appVersion))
+			if err != nil {
+				log.Print("Can't send message", err)
+				return err
+			}
+		}
+		return nil
+	})
+
+	bot.Start()
 }
 
 func init() {
