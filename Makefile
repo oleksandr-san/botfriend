@@ -1,11 +1,14 @@
 APP := botfriend
 REGISTRY := gcr.io/mlkube
-version := $(shell git describe --tags --always --dirty --abbrev=0)
-commit := $(shell git rev-parse --short HEAD)
-goos := $(shell go env GOHOSTOS)
-goarch := $(shell go env GOHOSTARCH)
-goversion := $(shell go version)
-buildtime := $(shell date -u '+%Y-%m-%d %H:%M:%S')
+VERSION := $(shell git describe --tags --always --dirty --abbrev=0)
+COMMIT := $(shell git rev-parse --short HEAD)
+# goos := $(shell go env GOHOSTOS)
+# goarch := $(shell go env GOHOSTARCH)
+TARGETOS=linux
+TARGETARCH=amd64
+
+get:
+	go get
 
 format:
 	gofmt -w -s .
@@ -16,15 +19,24 @@ lint:
 test:
 	go test -v
 
-build: format
-	GOOS=${goos} GOARCH=${goarch} go build -v -o botfriend -ldflags "-X="github.com/oleksandr-san/botfriend/cmd.appVersion=$(version)" -X="github.com/oleksandr-san/botfriend/cmd.appCommit=$(commit)""
+build: get format
+	CGO_ENABLED=0 GOOS=${TARGETOS} GOARCH=${TARGETARCH} go build -v -o botfriend -ldflags "-X="github.com/oleksandr-san/botfriend/cmd.appVersion=${VERSION}" -X="github.com/oleksandr-san/botfriend/cmd.appCommit=${COMMIT}""
 
-image: build
-	docker build -t $(REGISTRY)/$(APP):$(version)-$(goos)-$(goarch) .
+build-linux-amd64:
+	CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -v -o botfriend -ldflags "-X="github.com/oleksandr-san/botfriend/cmd.appVersion=${VERSION}" -X="github.com/oleksandr-san/botfriend/cmd.appCommit=${COMMIT}
 
+build-linux-arm:
+	CGO_ENABLED=0 GOOS=linux GOARCH=arm go build -v -o botfriend -ldflags "-X="github.com/oleksandr-san/botfriend/cmd.appVersion=${VERSION}" -X="github.com/oleksandr-san/botfriend/cmd.appCommit=${COMMIT}
+
+build-linux-arm64:
+	CGO_ENABLED=0 GOOS=linux GOARCH=arm64 go build -v -o botfriend -ldflags "-X="github.com/oleksandr-san/botfriend/cmd.appVersion=${VERSION}" -X="github.com/oleksandr-san/botfriend/cmd.appCommit=${COMMIT}
+
+
+image:
+	docker build . -t ${REGISTRY}/${APP}:${VERSION}-${TARGETARCH}  --build-arg TARGETARCH=${TARGETARCH}
 clean:
 	rm -f botfriend
-	docker rmi -f $(REGISTRY)/$(APP):$(version)-$(goos)-$(goarch)
+	docker rmi ${REGISTRY}/${APP}:${VERSION}-${TARGETARCH}
 
 rebuild:
 	clean
