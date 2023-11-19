@@ -1,4 +1,4 @@
-APP := $(shell basename $(shell git remote get-url origin))
+APP := botfriend
 REGISTRY := gcr.io/mlkube/botfriend
 version := $(shell git describe --tags --always --dirty --abbrev=0)
 commit := $(shell git rev-parse --short HEAD)
@@ -17,7 +17,7 @@ test:
 	go test -v
 
 build: format
-	CGO_ENABLED=0 GOOS=${goos} GOARCH=${goarch} go build -v -o botfriend -ldflags "-X="github.com/oleksandr-san/botfriend/cmd.appVersion=$(version)" -X="github.com/oleksandr-san/botfriend/cmd.appCommit=$(commit)""
+	GOOS=${goos} GOARCH=${goarch} go build -v -o botfriend -ldflags "-X="github.com/oleksandr-san/botfriend/cmd.appVersion=$(version)" -X="github.com/oleksandr-san/botfriend/cmd.appCommit=$(commit)""
 
 image: build
 	docker build -t $(REGISTRY)/$(APP):$(version)-$(goos)-$(goarch) .
