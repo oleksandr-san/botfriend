@@ -1,6 +1,6 @@
 APP := botfriend
 REGISTRY := gcr.io/mlkube
-VERSION := $(shell git describe --tags --always --dirty --abbrev=0)
+VERSION := $(shell git describe --tags --always --abbrev=0)
 COMMIT := $(shell git rev-parse --short HEAD)
 # goos := $(shell go env GOHOSTOS)
 # goarch := $(shell go env GOHOSTARCH)
@@ -31,9 +31,12 @@ build-linux-arm:
 build-linux-arm64:
 	CGO_ENABLED=0 GOOS=linux GOARCH=arm64 go build -v -o botfriend -ldflags "-X="github.com/oleksandr-san/botfriend/cmd.appVersion=${VERSION}" -X="github.com/oleksandr-san/botfriend/cmd.appCommit=${COMMIT}
 
-
 image:
 	docker build . -t ${REGISTRY}/${APP}:${VERSION}-${TARGETARCH}  --build-arg TARGETARCH=${TARGETARCH}
+
+push-image:
+	docker push ${REGISTRY}/${APP}:${VERSION}-${TARGETARCH}
+
 clean:
 	rm -f botfriend
 	docker rmi ${REGISTRY}/${APP}:${VERSION}-${TARGETARCH}
