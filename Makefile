@@ -39,7 +39,7 @@ push-image:
 
 clean:
 	rm -f botfriend
-	docker rmi ${REGISTRY}/${APP}:${VERSION}-${TARGETARCH}
+	docker rmi ${REGISTRY}/${APP}:${VERSION}-${COMMIT}-${TARGETARCH}
 
 rebuild:
 	clean
