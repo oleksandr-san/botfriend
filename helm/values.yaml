@@ -6,7 +6,7 @@ replicaCount: 1
 image:
   repository: gcr.io/mlkube/botfriend
   # Overrides the image tag whose default is the chart appVersion.
-  tag: "1.0.2-16535e7"
+  tag: "1.0.3-b7ac4a2"
   arch: amd64
   os: linux
 secret:
