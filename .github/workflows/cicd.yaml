@@ -10,14 +10,3 @@ jobs:
 
       - name: Run tests
         run: make test
-
-      - name: GCR login
-        uses: elgohr/gcloud-login-action@v2
-        with:
-          account_key: ${{ secrets.GCLOUD_KEY }}
-
-      - name: Docker login
-        uses: docker/login-action@v2
-        with:
-          username: ${{ env.username }}
-          password: ${{ env.password }}
