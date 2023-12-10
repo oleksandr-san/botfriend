@@ -6,7 +6,7 @@ COMMIT := $(shell git rev-parse --short HEAD)
 # goarch := $(shell go env GOHOSTARCH)
 TARGETOS=linux
 TARGETARCH=amd64
-TAG := ${VERSION}-${COMMIT}-${TARGETARCH}
+TAG := ${VERSION}-${COMMIT}-${TARGETOS}-${TARGETARCH}
 
 get:
 	go get
