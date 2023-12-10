@@ -6,7 +6,7 @@ replicaCount: 1
 image:
   registry: ghcr.io
   repository: oleksandr-san/botfriend
-  tag: "1.0.3-eb718c6"
+  tag: "1.0.4-7bb89dd"
   arch: amd64
   os: linux
 secret:
