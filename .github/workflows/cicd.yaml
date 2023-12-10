@@ -16,4 +16,4 @@ jobs:
         with:
           registry: gcr.io
           username: _json_key
-          password: ${{ secrets.GCLOUD_KEY }}
+          password: ${{ secrets.GCR_JSON_KEY }}
