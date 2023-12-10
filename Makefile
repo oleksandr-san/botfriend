@@ -6,6 +6,7 @@ COMMIT := $(shell git rev-parse --short HEAD)
 # goarch := $(shell go env GOHOSTARCH)
 TARGETOS=linux
 TARGETARCH=amd64
+TAG := ${VERSION}-${COMMIT}-${TARGETARCH}
 
 get:
 	go get
@@ -32,14 +33,14 @@ build-linux-arm64:
 	CGO_ENABLED=0 GOOS=linux GOARCH=arm64 go build -v -o botfriend -ldflags "-X="github.com/oleksandr-san/botfriend/cmd.appVersion=${VERSION}" -X="github.com/oleksandr-san/botfriend/cmd.appCommit=${COMMIT}
 
 image:
-	docker build . -t ${REGISTRY}/${APP}:${VERSION}-${TARGETARCH}  --build-arg TARGETARCH=${TARGETARCH}
+	docker build . -t ${REGISTRY}/${APP}:${TAG}  --build-arg TARGETARCH=${TARGETARCH}
 
 push-image:
-	docker push ${REGISTRY}/${APP}:${VERSION}-${TARGETARCH}
+	docker push ${REGISTRY}/${APP}:${TAG}
 
 clean:
 	rm -f botfriend
-	docker rmi ${REGISTRY}/${APP}:${VERSION}-${COMMIT}-${TARGETARCH}
+	docker rmi ${REGISTRY}/${APP}:${TAG}
 
 rebuild:
 	clean
