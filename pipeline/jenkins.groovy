@@ -1,7 +1,7 @@
 pipeline {
     agent any
     environment {
-        REPO = ''
+        REPO = 'https://github.com/oleksandr-san/botfriend'
         BRANCH = 'jenkins'
     }
     parameters {
