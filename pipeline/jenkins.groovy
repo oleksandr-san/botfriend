@@ -5,16 +5,17 @@ pipeline {
         choice(name: 'ARCH', choices: ['amd64', 'arm', 'arm64'], description: 'Pick ARCH')
     }
     stages {
-        stage('build') {
-            steps {
-                echo "make build"
-                make build
-            }
-        }
         stage('test') {
             steps {
                 echo "make test"
-                make test
+                sh "make test"
+            }
+        }
+        stage('build') {
+            steps {
+                echo "Build for platform ${params.OS}"
+                echo "Build for arch: ${params.ARCH}"
+                sh "make build TARGETOS=${params.OS} TARGETARCH=${params.ARCH}"
             }
         }
         stage('image') {
@@ -27,8 +28,11 @@ pipeline {
         }
         stage('push') {
             steps {
-                echo "make push"
-                make push
+                script {
+                    docker.withRegistry('', 'dockerhub') {
+                        sh 'make push'
+                    }
+                }
             }
         }
     }
