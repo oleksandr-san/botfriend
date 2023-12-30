@@ -12,7 +12,7 @@ pipeline {
         stage('clone') {
             steps {
                 echo "git clone -b ${BRANCH} ${REPO}"
-                git clone -b ${BRANCH} ${REPO}
+                sh 'git clone -b ${BRANCH} ${REPO}'
             }
         }
         stage('build') {
