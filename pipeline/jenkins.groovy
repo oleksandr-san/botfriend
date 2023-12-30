@@ -20,8 +20,8 @@ pipeline {
         }
         stage('image') {
             steps {
-                echo "Build for platform ${params.OS}"
-                echo "Build for arch: ${params.ARCH}"
+                echo "Build image for platform ${params.OS}"
+                echo "Build image for arch: ${params.ARCH}"
 
                 sh "make image TARGETOS=${params.OS} TARGETARCH=${params.ARCH} REGISTRY=oleksandran"
             }
@@ -30,7 +30,7 @@ pipeline {
             steps {
                 script {
                     docker.withRegistry('', 'dockerhub') {
-                        sh 'make push REGISTRY=oleksandran'
+                        sh 'make push TARGETOS=${params.OS} TARGETARCH=${params.ARCH} REGISTRY=oleksandran'
                     }
                 }
             }
