@@ -23,17 +23,8 @@ test:
 build: get format
 	CGO_ENABLED=0 GOOS=${TARGETOS} GOARCH=${TARGETARCH} go build -v -o botfriend -ldflags "-X="github.com/oleksandr-san/botfriend/cmd.appVersion=${VERSION}" -X="github.com/oleksandr-san/botfriend/cmd.appCommit=${COMMIT}""
 
-build-linux-amd64:
-	CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -v -o botfriend -ldflags "-X="github.com/oleksandr-san/botfriend/cmd.appVersion=${VERSION}" -X="github.com/oleksandr-san/botfriend/cmd.appCommit=${COMMIT}
-
-build-linux-arm:
-	CGO_ENABLED=0 GOOS=linux GOARCH=arm go build -v -o botfriend -ldflags "-X="github.com/oleksandr-san/botfriend/cmd.appVersion=${VERSION}" -X="github.com/oleksandr-san/botfriend/cmd.appCommit=${COMMIT}
-
-build-linux-arm64:
-	CGO_ENABLED=0 GOOS=linux GOARCH=arm64 go build -v -o botfriend -ldflags "-X="github.com/oleksandr-san/botfriend/cmd.appVersion=${VERSION}" -X="github.com/oleksandr-san/botfriend/cmd.appCommit=${COMMIT}
-
 image:
-	docker build . -t ${REGISTRY}/${APP}:${TAG}  --build-arg TARGETARCH=${TARGETARCH}
+	docker build . -t ${REGISTRY}/${APP}:${TAG}  --build-arg TARGETARCH=${TARGETARCH} --build-arg TARGETOS=${TARGETOS}
 
 push-image:
 	docker push ${REGISTRY}/${APP}:${TAG}
