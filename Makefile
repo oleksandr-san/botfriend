@@ -26,7 +26,7 @@ build: get format
 image:
 	docker build . -t ${REGISTRY}/${APP}:${TAG}  --build-arg TARGETARCH=${TARGETARCH} --build-arg TARGETOS=${TARGETOS}
 
-push-image:
+push:
 	docker push ${REGISTRY}/${APP}:${TAG}
 
 clean:
