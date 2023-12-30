@@ -32,7 +32,7 @@ pipeline {
                 echo "Build for platform ${params.OS}"
                 echo "Build for arch: ${params.ARCH}"
 
-                make image TARGETOS=${params.OS} TARGETARCH=${params.ARCH}
+                sh "make image TARGETOS=${params.OS} TARGETARCH=${params.ARCH}"
             }
         }
         stage('push') {
