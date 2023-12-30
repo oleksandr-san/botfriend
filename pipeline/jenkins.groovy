@@ -1,20 +1,10 @@
 pipeline {
     agent any
-    environment {
-        REPO = 'https://github.com/oleksandr-san/botfriend'
-        BRANCH = 'jenkins'
-    }
     parameters {
         choice(name: 'OS', choices: ['linux', 'darwin', 'windows', 'all'], description: 'Pick OS')
         choice(name: 'ARCH', choices: ['amd64', 'arm', 'arm64'], description: 'Pick ARCH')
     }
     stages {
-        stage('clone') {
-            steps {
-                echo "git clone -b ${BRANCH} ${REPO}"
-                sh 'git clone -b ${BRANCH} ${REPO}'
-            }
-        }
         stage('build') {
             steps {
                 echo "make build"
