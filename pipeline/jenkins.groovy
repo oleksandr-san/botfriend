@@ -30,7 +30,7 @@ pipeline {
             steps {
                 script {
                     docker.withRegistry('', 'dockerhub') {
-                        sh 'make push TARGETOS=${params.OS} TARGETARCH=${params.ARCH} REGISTRY=oleksandran'
+                        sh "make push TARGETOS=${params.OS} TARGETARCH=${params.ARCH} REGISTRY=oleksandran"
                     }
                 }
             }
