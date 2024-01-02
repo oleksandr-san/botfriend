@@ -1,0 +1,50 @@
+variables:
+  OS: 
+    value: "linux"
+    description: "Pick OS"
+    type: "enum"
+    options: 
+      - "linux"
+      - "darwin"
+      - "windows"
+      - "all"
+  ARCH: 
+    value: "amd64"
+    description: "Pick ARCH"
+    type: "enum"
+    options:
+      - "amd64"
+      - "arm"
+      - "arm64"
+
+stages:
+  - test
+  - build
+  - image
+  - push
+
+test:
+  stage: test
+  script:
+    - echo "make test"
+    - make test
+
+build:
+  stage: build
+  script:
+    - echo "Build for platform $OS"
+    - echo "Build for arch: $ARCH"
+    - make build TARGETOS=$OS TARGETARCH=$ARCH
+
+image:
+  stage: image
+  script:
+    - echo "Build for platform $OS"
+    - echo "Build for arch: $ARCH"
+    - make image TARGETOS=$OS TARGETARCH=$ARCH REGISTRY=oleksandran
+
+push:
+  stage: push
+  script:
+    - docker login -u $DOCKER_USER -p $DOCKER_PASSWORD
+    - make push REGISTRY=oleksandran
