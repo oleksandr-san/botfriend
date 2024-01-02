@@ -1,8 +1,9 @@
+image: golang:latest
+
 variables:
   OS: 
     value: "linux"
     description: "Pick OS"
-    type: "enum"
     options: 
       - "linux"
       - "darwin"
@@ -11,7 +12,6 @@ variables:
   ARCH: 
     value: "amd64"
     description: "Pick ARCH"
-    type: "enum"
     options:
       - "amd64"
       - "arm"
@@ -20,8 +20,8 @@ variables:
 stages:
   - test
   - build
-  - image
-  - push
+  - build-image
+  - push-image
 
 test:
   stage: test
@@ -33,18 +33,18 @@ build:
   stage: build
   script:
     - echo "Build for platform $OS"
-    - echo "Build for arch: $ARCH"
+    - echo "Build for arch $ARCH"
     - make build TARGETOS=$OS TARGETARCH=$ARCH
 
-image:
-  stage: image
+build-image:
+  stage: build-image
   script:
     - echo "Build for platform $OS"
-    - echo "Build for arch: $ARCH"
+    - echo "Build for arch $ARCH"
     - make image TARGETOS=$OS TARGETARCH=$ARCH REGISTRY=oleksandran
 
-push:
-  stage: push
+push-image:
+  stage: push-image
   script:
     - docker login -u $DOCKER_USER -p $DOCKER_PASSWORD
     - make push REGISTRY=oleksandran
