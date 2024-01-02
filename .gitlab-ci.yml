@@ -38,6 +38,7 @@ build:
 
 build-image:
   stage: build-image
+  image: docker:latest
   script:
     - echo "Build for platform $OS"
     - echo "Build for arch $ARCH"
@@ -45,6 +46,7 @@ build-image:
 
 push-image:
   stage: push-image
+  image: docker:latest
   script:
     - docker login -u $DOCKER_USER -p $DOCKER_PASSWORD
     - make push REGISTRY=oleksandran
