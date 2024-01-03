@@ -1,4 +1,4 @@
-image: golang:latest
+image: golang:1.21.5
 
 variables:
   OS: 
@@ -32,21 +32,20 @@ test:
 build:
   stage: build
   script:
-    - echo "Build for platform $OS"
-    - echo "Build for arch $ARCH"
+    - echo "Build for arch $ARCH and platform $OS"
     - make build TARGETOS=$OS TARGETARCH=$ARCH
 
 build-image:
   stage: build-image
-  image: docker:latest
+  image: oleksandran/docker-ci:24.0.7
   script:
-    - echo "Build for platform $OS"
-    - echo "Build for arch $ARCH"
+    - echo "Build image for arch $ARCH and platform $OS"
     - make image TARGETOS=$OS TARGETARCH=$ARCH REGISTRY=oleksandran
 
 push-image:
   stage: push-image
-  image: docker:latest
+  image: oleksandran/docker-ci:24.0.7
   script:
+    - echo "Push image for arch $ARCH and platform $OS"
     - docker login -u $DOCKER_USER -p $DOCKER_PASSWORD
-    - make push REGISTRY=oleksandran
+    - make push TARGETOS=$OS TARGETARCH=$ARCH REGISTRY=oleksandran
