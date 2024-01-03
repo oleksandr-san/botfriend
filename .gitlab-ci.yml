@@ -45,11 +45,11 @@ build-image:
   stage: build-image
   script:
     - echo "Build image for arch $ARCH and platform $OS"
-    - make image TARGETOS=$OS TARGETARCH=$ARCH REGISTRY=oleksandran
+    - make image TARGETOS=$OS TARGETARCH=$ARCH REGISTRY=$CI_REGISTRY
 
 push-image:
   stage: push-image
   script:
     - echo "Push image for arch $ARCH and platform $OS"
-    - docker login -u $DOCKER_USER -p $DOCKER_PASSWORD
-    - make push TARGETOS=$OS TARGETARCH=$ARCH REGISTRY=oleksandran
+    - docker login -u "gitlab-ci-token" -p $CI_JOB_TOKEN $CI_REGISTRY
+    - make push TARGETOS=$OS TARGETARCH=$ARCH REGISTRY=$CI_REGISTRY
