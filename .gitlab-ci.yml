@@ -12,7 +12,6 @@ variables:
       - "linux"
       - "darwin"
       - "windows"
-      - "all"
   ARCH: 
     value: "amd64"
     description: "Pick ARCH"
@@ -48,7 +47,9 @@ build-image:
 
 push-image:
   stage: build-image
+  dependencies:
+    - build-image
   script:
-    - echo "Push image for arch $ARCH and platform $OS"
     - docker login -u "gitlab-ci-token" -p $CI_JOB_TOKEN $CI_REGISTRY
+    - echo "Push image for arch $ARCH and platform $OS"
     - make push TARGETOS=$OS TARGETARCH=$ARCH REGISTRY=$CI_REGISTRY
