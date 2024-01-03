@@ -31,14 +31,14 @@ stages:
   - push-image
 
 test:
-  image: golang:1.21.5
+  # image: golang:1.21.5
   stage: test
   script:
     - echo "make test"
     - make test
 
 build:
-  image: golang:1.21.5
+  # image: golang:1.21.5
   stage: build
   script:
     - echo "Build for arch $ARCH and platform $OS"
