@@ -44,12 +44,6 @@ build-image:
   script:
     - echo "Build image for arch $ARCH and platform $OS"
     - make image TARGETOS=$OS TARGETARCH=$ARCH REGISTRY=$CI_REGISTRY
-
-push-image:
-  stage: build-image
-  dependencies:
-    - build-image
-  script:
-    - docker login -u "gitlab-ci-token" -p $CI_JOB_TOKEN $CI_REGISTRY
     - echo "Push image for arch $ARCH and platform $OS"
+    - docker login -u "gitlab-ci-token" -p $CI_JOB_TOKEN $CI_REGISTRY
     - make push TARGETOS=$OS TARGETARCH=$ARCH REGISTRY=$CI_REGISTRY
