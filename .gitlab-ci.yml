@@ -25,7 +25,6 @@ stages:
   - test
   - build
   - build-image
-  - push-image
 
 test:
   image: golang:1.21.5
@@ -48,7 +47,7 @@ build-image:
     - make image TARGETOS=$OS TARGETARCH=$ARCH REGISTRY=$CI_REGISTRY
 
 push-image:
-  stage: push-image
+  stage: build-image
   script:
     - echo "Push image for arch $ARCH and platform $OS"
     - docker login -u "gitlab-ci-token" -p $CI_JOB_TOKEN $CI_REGISTRY
