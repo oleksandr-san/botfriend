@@ -23,7 +23,6 @@ variables:
 stages:
   - test
   - build
-  - build-image
 
 test:
   image: golang:1.21.5
@@ -31,19 +30,14 @@ test:
   script:
     - echo "make test"
     - make test
-
-build:
-  image: golang:1.21.5
-  stage: build
-  script:
     - echo "Build for arch $ARCH and platform $OS"
     - make build TARGETOS=$OS TARGETARCH=$ARCH
 
-build-image:
+build:
   stage: build-image
   script:
     - echo "Build image for arch $ARCH and platform $OS"
     - make image TARGETOS=$OS TARGETARCH=$ARCH REGISTRY=$CI_REGISTRY
     - echo "Push image for arch $ARCH and platform $OS"
-    - docker login -u "gitlab-ci-token" -p $CI_JOB_TOKEN $CI_REGISTRY
+    - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
     - make push TARGETOS=$OS TARGETARCH=$ARCH REGISTRY=$CI_REGISTRY
