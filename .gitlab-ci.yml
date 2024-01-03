@@ -1,4 +1,11 @@
-image: golang:1.21.5
+
+default:
+  image: oleksandran/docker-ci:24.0.7
+  services:
+    - docker:24.0.7-dind
+  before_script:
+    - docker info
+
 
 variables:
   OS: 
@@ -24,12 +31,14 @@ stages:
   - push-image
 
 test:
+  image: golang:1.21.5
   stage: test
   script:
     - echo "make test"
     - make test
 
 build:
+  image: golang:1.21.5
   stage: build
   script:
     - echo "Build for arch $ARCH and platform $OS"
@@ -37,14 +46,12 @@ build:
 
 build-image:
   stage: build-image
-  image: oleksandran/docker-ci:24.0.7
   script:
     - echo "Build image for arch $ARCH and platform $OS"
     - make image TARGETOS=$OS TARGETARCH=$ARCH REGISTRY=oleksandran
 
 push-image:
   stage: push-image
-  image: oleksandran/docker-ci:24.0.7
   script:
     - echo "Push image for arch $ARCH and platform $OS"
     - docker login -u $DOCKER_USER -p $DOCKER_PASSWORD
