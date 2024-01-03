@@ -37,7 +37,7 @@ build:
   stage: build
   script:
     - echo "Build image for arch $ARCH and platform $OS"
-    - make image TARGETOS=$OS TARGETARCH=$ARCH REGISTRY=$CI_REGISTRY
+    - make image TARGETOS=$OS TARGETARCH=$ARCH REGISTRY=$CI_REGISTRY/$CI_PROJECT_PATH
     - echo "Push image for arch $ARCH and platform $OS"
     - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
-    - make push TARGETOS=$OS TARGETARCH=$ARCH REGISTRY=$CI_REGISTRY
+    - make push TARGETOS=$OS TARGETARCH=$ARCH REGISTRY=$CI_REGISTRY/$CI_PROJECT_PATH
