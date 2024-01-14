@@ -59,6 +59,12 @@ func runBot() {
 				log.Print("Can't send message", err)
 				return err
 			}
+		default:
+			err := c.Send(fmt.Sprintf("I don't understand %s", payload))
+			if err != nil {
+				log.Print("Can't send message", err)
+				return err
+			}
 		}
 		return nil
 	})
