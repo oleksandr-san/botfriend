@@ -6,7 +6,7 @@ replicaCount: 1
 image:
   repository: ghcr.io/oleksandr-san/botfriend
   # Overrides the image tag whose default is the chart appVersion.
-  tag: "1.0.3-9e3dab4"
+  tag: "1.0.3-24fff9c"
   arch: amd64
   os: linux
 secret:
