@@ -6,7 +6,7 @@ replicaCount: 1
 image:
   repository: ghcr.io/oleksandr-san
   # Overrides the image tag whose default is the chart appVersion.
-  tag: "1.0.3-13f8d2a"
+  tag: "1.0.3-6275b44"
   arch: amd64
   os: linux
 secret:
