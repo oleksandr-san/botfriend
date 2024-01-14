@@ -6,6 +6,7 @@ package cmd
 import (
 	"fmt"
 	"log"
+	"net/http"
 	"os"
 	"time"
 
@@ -27,12 +28,33 @@ Cobra is a CLI library for Go that empowers applications.
 This application is a tool to generate the needed files
 to quickly create a Cobra application.`,
 	Run: func(cmd *cobra.Command, args []string) {
-		fmt.Printf("running bot version: %s, commit: %s", appVersion, appCommit)
+		log.Printf("running bot version: %s, commit: %s\n", appVersion, appCommit)
 		runBot()
 	},
 }
 
+func healthHandler(w http.ResponseWriter, r *http.Request) {
+	// Check the health of the server and return a status code accordingly
+	if serverIsHealthy() {
+		w.WriteHeader(http.StatusOK)
+		fmt.Fprint(w, "Server is healthy")
+	} else {
+		w.WriteHeader(http.StatusInternalServerError)
+		fmt.Fprint(w, "Server is not healthy")
+	}
+}
+
+func serverIsHealthy() bool {
+	// Check the health of the server and return true or false accordingly
+	// For example, check if the server can connect to the database
+	return true
+}
+
 func runBot() {
+	http.HandleFunc("/health", healthHandler)
+	log.Println("Listening on port 80")
+	go http.ListenAndServe(":80", nil)
+
 	pref := tele.Settings{
 		Token:  TELE_TOKEN,
 		Poller: &tele.LongPoller{Timeout: 10 * time.Second},
