@@ -51,7 +51,7 @@ func serverIsHealthy() bool {
 }
 
 func runBot() {
-	http.HandleFunc("/health", healthHandler)
+	http.HandleFunc("/", healthHandler)
 	log.Println("Listening on port 80")
 	go http.ListenAndServe(":80", nil)
 
