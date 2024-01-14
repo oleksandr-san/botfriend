@@ -1,5 +1,5 @@
 APP := botfriend
-REGISTRY := gcr.io/mlkube
+REGISTRY := ghcr.io/oleksandr-san
 VERSION := $(shell git describe --tags --always --abbrev=0)
 COMMIT := $(shell git rev-parse --short HEAD)
 # goos := $(shell go env GOHOSTOS)
