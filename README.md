@@ -122,3 +122,7 @@ Fingerprint: cmd/bot.go:telegram-bot-api-token:16
 4:47PM INF scan completed in 108ms
 4:47PM WRN leaks found: 1
 ```
+
+## Grafana monitoring
+
+![Grafana](docs/grafana-demo.gif)
