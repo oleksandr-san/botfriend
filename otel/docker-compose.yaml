@@ -3,7 +3,7 @@ services:
 
   # Botfriend
   botfriend:
-    image: denvasyliev/botfriend:v1.0.0-otel
+    image: ghcr.io/oleksandr-san/botfriend:1.0.6-904b5e7-linux-amd64
     environment:
       - METRICS_HOST=collector:4317
       - TELE_TOKEN=${TELE_TOKEN}
